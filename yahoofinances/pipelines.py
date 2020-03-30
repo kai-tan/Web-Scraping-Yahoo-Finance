@@ -27,7 +27,7 @@ from pymongo import MongoClient
 
 
 class MongodbPipeline(object):
-    collection_name = "stocks_data"
+    collection = "stocks_data"
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri= mongo_uri
