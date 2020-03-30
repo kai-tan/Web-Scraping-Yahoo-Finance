@@ -95,5 +95,5 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 
 SPLASH_URL = 'http://192.168.99.100:8050'
 
-MONGO_URI = 'mongodb://heroku_8n7z0nqh:vjhjverngsv96oncj344iludie@ds131313.mlab.com:31313/heroku_8n7z0nqh'
+MONGO_URI = 'mongodb://heroku_8n7z0nqh:vjhjverngsv96oncj344iludie@ds131313.mlab.com:31313/heroku_8n7z0nqh?retryWrites=false'
 MONGO_DB = 'heroku_8n7z0nqh'
