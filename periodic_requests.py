@@ -1,4 +1,5 @@
-import requests, pytz 
+import requests
+import pytz
 from apscheduler.schedulers.twisted import TwistedScheduler 
 from twisted.internet import reactor 
 
@@ -8,8 +9,8 @@ def send_request():
         'spider': 'yahoo_finances'
     })
 
-if __name__ == '__name__': 
+if __name__ == '__main__': 
     scheduler = TwistedScheduler(timezone=pytz.utc)
-    scheduler.add_job(send_request, 'cron', day_of_week='mon-sun', hour='6', minute='0')
+    scheduler.add_job(send_request, 'cron', second='30', jitter=120)
     scheduler.start()
     reactor.run()
