@@ -6,8 +6,19 @@ from scrapy_splash import SplashRequest
 class YahooFinancesSpider(scrapy.Spider):
     name = 'yahoo_finances'
     # allowed_domains = ['finance.yahoo.com/quote']
+    init_stock_sym = ['AAL', 'AAPL', 'ADBE', 'ADI', 'ADP', 'ADSK', 'ALGN', 'ALXN', 'AMAT', 'AMD', 'AMGN', 'AMZN', 'ASML', 'ATVI', 'AVGO', 'BIDU', 'BIIB', 'BKNG', 'BMRN', 'CDNS', 'CELG', 
+                    'CERN', 'CHKP', 'CHTR', 'CMCSA', 'COST', 'CSCO', 'CSX', 'CTAS', 'CTRP', 'CTSH', 'CTXS', 'DLTR', 'EA', 'EBAY', 'EXPE', 'FAST', 'FB', 'FISV', 'FOX', 'FOXA', 'GILD', 
+                    'GOOG', 'GOOGL', 'HAS', 'HSIC', 'IDXX', 'ILMN', 'INCY', 'INTC', 'INTU', 'ISRG', 'JBHT', 'JD', 'KHC', 'KLAC', 'LBTYA', 'LBTYK', 'LRCX', 'LULU', 'MAR', 'MCHP', 'MDLZ', 
+                    'MELI', 'MNST', 'MSFT', 'MU', 'MXIM', 'MYL', 'NFLX', 'NTAP', 'NTES', 'NVDA', 'NXPI', 'ORLY', 'PAYX', 'PCAR', 'PEP', 'PYPL', 'QCOM', 'REGN', 'ROST', 'SBUX', 'SIRI', 
+                    'SNPS', 'SWKS', 'SYMC', 'TMUS', 'TSLA', 'TTWO', 'TXN', 'UAL', 'ULTA', 'VRSK', 'VRSN', 'VRTX', 'WBA', 'WDAY', 'WDC', 'WLTW', 'WYNN', 'XEL', 'XLNX']
+    
+    final_url = []
 
-    start_urls = ['https://finance.yahoo.com/quote/AAL?p=AAL','https://finance.yahoo.com/quote/AAPL/?p=AAPL', 'https://finance.yahoo.com/quote/ADBE/?p=ADBE']
+    for stock in init_stock_sym:
+        final_url.append('https://finance.yahoo.com/quote/{0}?p={0}'.format(stock))
+
+
+    start_urls = final_url
 
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
 
@@ -22,7 +33,7 @@ class YahooFinancesSpider(scrapy.Spider):
         end
     '''
 
-    # def start_requests(self): 
+    # def start_requests(self):
     #     yield SplashRequest(url="https://finance.yahoo.com/quote/AAL?p=AAL", callback=self.parse, endpoint="execute", args={
     #         'lua_source': self.script
     #     })
@@ -46,7 +57,7 @@ class YahooFinancesSpider(scrapy.Spider):
         object = {}
         object['stock_symbol'] = last_chars
         for quote in response.xpath("//div[@id='quote-summary']/div[1]/table/tbody/tr"):
-            
+
             print('quote', quote)
             name = quote.xpath(".//td[1]/span/text()").get()
             if name == 'Avg. Volume':
@@ -56,142 +67,196 @@ class YahooFinancesSpider(scrapy.Spider):
             object[name] = value
 
         for quote in response.xpath("//div[@id='quote-summary']/div[2]/table/tbody/tr"):
-            
+
             print('quote', quote)
             name = quote.xpath(".//td[1]/span/text()").get()
             value = quote.xpath(".//td[2]/span/text()").get()
 
             object[name] = value
 
-        object['Fair Value'] = response.xpath("//div[@class='IbBox Ta(start) C($tertiaryColor)']/text()").get()
-        object['Recommendation Rating'] = response.xpath("//*[@id='Col2-7-QuoteModule-Proxy']/div/section/a/h2/span/text()").get()
+        object['Fair Value'] = response.xpath(
+            "//div[@class='IbBox Ta(start) C($tertiaryColor)']/text()").get()
+        object['Recommendation Rating'] = response.xpath(
+            "//*[@id='Col2-7-QuoteModule-Proxy']/div/section/a/h2/span/text()").get()
 
         yield object
 
         # statistics_page = response.xpath("//*[@id='quote-nav']/ul/li[5]/a/@href").get()
 
-        # if statistics_page: 
+        # if statistics_page:
         yield scrapy.Request(url='https://finance.yahoo.com/quote/{0}/key-statistics?p={0}'.format(last_chars), callback=self.parse_statistics)
 
-    
-    def parse_statistics(self, response): 
+    def parse_statistics(self, response):
 
-            object = {}
-            
-            last_chars = response.url.split('/')[4]
-            print('response_url', response.url)
-            print('last_chars', last_chars)
+        object = {}
 
-            object['stock_symbol'] = last_chars
+        last_chars = response.url.split('/')[4]
+        print('response_url', response.url)
+        print('last_chars', last_chars)
 
-            # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody
+        object['stock_symbol'] = last_chars
 
-            # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody/tr[1]/td[2]
+        # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody
 
-            # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody/tr[1]/td[3]
+        # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody/tr[1]/td[2]
 
-            # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody/tr[2]/td[2]
+        # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody/tr[1]/td[3]
 
-            for valuation in response.xpath("//*[@id='Col1-0-KeyStatistics-Proxy']/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody"):    
-                print('valuation', valuation)
+        # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody/tr[2]/td[2]
 
-                object['Market Cap (intraday)_current'] = valuation.xpath(".//tr[1]/td[2]/text()").get()
-                object['Market Cap (intraday)_12/31/2019'] = valuation.xpath(".//tr[1]/td[3]/text()").get()
-                object['Market Cap (intraday)_9/30/2019'] = valuation.xpath(".//tr[1]/td[4]/text()").get()
-                object['Market Cap (intraday)_6/30/2019'] = valuation.xpath(".//tr[1]/td[5]/text()").get()
-                object['Market Cap (intraday)_3/31/2019'] = valuation.xpath(".//tr[1]/td[6]/text()").get()
-                object['Market Cap (intraday)_12/31/2018'] = valuation.xpath(".//tr[1]/td[7]/text()").get()
+        for valuation in response.xpath("//*[@id='Col1-0-KeyStatistics-Proxy']/section/div[3]/div[1]/div[2]/div/div[1]/div[1]/table/tbody"):
+            print('valuation', valuation)
 
-                object['Enterprise Value_current'] = valuation.xpath(".//tr[2]/td[2]/text()").get()
-                object['Enterprise Value_12/31/2019'] = valuation.xpath(".//tr[2]/td[3]/text()").get()
-                object['Enterprise Value_9/30/2019'] = valuation.xpath(".//tr[2]/td[4]/text()").get()
-                object['Enterprise Value_6/30/2019'] = valuation.xpath(".//tr[2]/td[5]/text()").get()
-                object['Enterprise Value_3/31/2019'] = valuation.xpath(".//tr[2]/td[6]/text()").get()
-                object['Enterprise Value_12/31/2018'] = valuation.xpath(".//tr[2]/td[7]/text()").get()
+            object['Market Cap (intraday)_current'] = valuation.xpath(
+                ".//tr[1]/td[2]/text()").get()
+            object['Market Cap (intraday)_12/31/2019'] = valuation.xpath(
+                ".//tr[1]/td[3]/text()").get()
+            object['Market Cap (intraday)_9/30/2019'] = valuation.xpath(
+                ".//tr[1]/td[4]/text()").get()
+            object['Market Cap (intraday)_6/30/2019'] = valuation.xpath(
+                ".//tr[1]/td[5]/text()").get()
+            object['Market Cap (intraday)_3/31/2019'] = valuation.xpath(
+                ".//tr[1]/td[6]/text()").get()
+            object['Market Cap (intraday)_12/31/2018'] = valuation.xpath(
+                ".//tr[1]/td[7]/text()").get()
 
-                object['Trailing P/E_current'] = valuation.xpath(".//tr[3]/td[2]/text()").get()
-                object['Trailing P/E_12/31/2019'] = valuation.xpath(".//tr[3]/td[3]/text()").get()
-                object['Trailing P/E_9/30/2019'] = valuation.xpath(".//tr[3]/td[4]/text()").get()
-                object['Trailing P/E_6/30/2019'] = valuation.xpath(".//tr[3]/td[5]/text()").get()
-                object['Trailing P/E_3/31/2019'] = valuation.xpath(".//tr[3]/td[6]/text()").get()
-                object['Trailing P/E_12/31/2018'] = valuation.xpath(".//tr[3]/td[7]/text()").get()
+            object['Enterprise Value_current'] = valuation.xpath(
+                ".//tr[2]/td[2]/text()").get()
+            object['Enterprise Value_12/31/2019'] = valuation.xpath(
+                ".//tr[2]/td[3]/text()").get()
+            object['Enterprise Value_9/30/2019'] = valuation.xpath(
+                ".//tr[2]/td[4]/text()").get()
+            object['Enterprise Value_6/30/2019'] = valuation.xpath(
+                ".//tr[2]/td[5]/text()").get()
+            object['Enterprise Value_3/31/2019'] = valuation.xpath(
+                ".//tr[2]/td[6]/text()").get()
+            object['Enterprise Value_12/31/2018'] = valuation.xpath(
+                ".//tr[2]/td[7]/text()").get()
 
-                object['Forward P/E_current'] = valuation.xpath(".//tr[4]/td[2]/text()").get()
-                object['Forward P/E_12/31/2019'] = valuation.xpath(".//tr[4]/td[3]/text()").get()
-                object['Forward P/E_9/30/2019'] = valuation.xpath(".//tr[4]/td[4]/text()").get()
-                object['Forward P/E_6/30/2019'] = valuation.xpath(".//tr[4]/td[5]/text()").get()
-                object['Forward P/E_3/31/2019'] = valuation.xpath(".//tr[4]/td[6]/text()").get()
-                object['Forward P/E_12/31/2018'] = valuation.xpath(".//tr[4]/td[7]/text()").get()
+            object['Trailing P/E_current'] = valuation.xpath(
+                ".//tr[3]/td[2]/text()").get()
+            object['Trailing P/E_12/31/2019'] = valuation.xpath(
+                ".//tr[3]/td[3]/text()").get()
+            object['Trailing P/E_9/30/2019'] = valuation.xpath(
+                ".//tr[3]/td[4]/text()").get()
+            object['Trailing P/E_6/30/2019'] = valuation.xpath(
+                ".//tr[3]/td[5]/text()").get()
+            object['Trailing P/E_3/31/2019'] = valuation.xpath(
+                ".//tr[3]/td[6]/text()").get()
+            object['Trailing P/E_12/31/2018'] = valuation.xpath(
+                ".//tr[3]/td[7]/text()").get()
 
-                object['PEG Ratio (5 yr expected)_current'] = valuation.xpath(".//tr[5]/td[2]/text()").get()
-                object['PEG Ratio (5 yr expected)_12/31/2019'] = valuation.xpath(".//tr[5]/td[3]/text()").get()
-                object['PEG Ratio (5 yr expected)_9/30/2019'] = valuation.xpath(".//tr[5]/td[4]/text()").get()
-                object['PEG Ratio (5 yr expected)_6/30/2019'] = valuation.xpath(".//tr[5]/td[5]/text()").get()
-                object['PEG Ratio (5 yr expected)_3/31/2019'] = valuation.xpath(".//tr[5]/td[6]/text()").get()
-                object['PEG Ratio (5 yr expected)_12/31/2018'] = valuation.xpath(".//tr[5]/td[7]/text()").get()
+            object['Forward P/E_current'] = valuation.xpath(
+                ".//tr[4]/td[2]/text()").get()
+            object['Forward P/E_12/31/2019'] = valuation.xpath(
+                ".//tr[4]/td[3]/text()").get()
+            object['Forward P/E_9/30/2019'] = valuation.xpath(
+                ".//tr[4]/td[4]/text()").get()
+            object['Forward P/E_6/30/2019'] = valuation.xpath(
+                ".//tr[4]/td[5]/text()").get()
+            object['Forward P/E_3/31/2019'] = valuation.xpath(
+                ".//tr[4]/td[6]/text()").get()
+            object['Forward P/E_12/31/2018'] = valuation.xpath(
+                ".//tr[4]/td[7]/text()").get()
 
-                object['Price/Sales (ttm)_current'] = valuation.xpath(".//tr[6]/td[2]/text()").get()
-                object['Price/Sales (ttm)_12/31/2019'] = valuation.xpath(".//tr[6]/td[3]/text()").get()
-                object['Price/Sales (ttm)_9/30/2019'] = valuation.xpath(".//tr[6]/td[4]/text()").get()
-                object['Price/Sales (ttm)_6/30/2019'] = valuation.xpath(".//tr[6]/td[5]/text()").get()
-                object['Price/Sales (ttm)_3/31/2019'] = valuation.xpath(".//tr[6]/td[6]/text()").get()
-                object['Price/Sales (ttm)_12/31/2018'] = valuation.xpath(".//tr[6]/td[7]/text()").get()
+            object['PEG Ratio (5 yr expected)_current'] = valuation.xpath(
+                ".//tr[5]/td[2]/text()").get()
+            object['PEG Ratio (5 yr expected)_12/31/2019'] = valuation.xpath(
+                ".//tr[5]/td[3]/text()").get()
+            object['PEG Ratio (5 yr expected)_9/30/2019'] = valuation.xpath(
+                ".//tr[5]/td[4]/text()").get()
+            object['PEG Ratio (5 yr expected)_6/30/2019'] = valuation.xpath(
+                ".//tr[5]/td[5]/text()").get()
+            object['PEG Ratio (5 yr expected)_3/31/2019'] = valuation.xpath(
+                ".//tr[5]/td[6]/text()").get()
+            object['PEG Ratio (5 yr expected)_12/31/2018'] = valuation.xpath(
+                ".//tr[5]/td[7]/text()").get()
 
-                object['Price/Book (mrq)_current'] = valuation.xpath(".//tr[7]/td[2]/text()").get()
-                object['Price/Book (mrq)_12/31/2019'] = valuation.xpath(".//tr[7]/td[3]/text()").get()
-                object['Price/Book (mrq)_9/30/2019'] = valuation.xpath(".//tr[7]/td[4]/text()").get()
-                object['Price/Book (mrq)_6/30/2019'] = valuation.xpath(".//tr[7]/td[5]/text()").get()
-                object['Price/Book (mrq)_3/31/2019'] = valuation.xpath(".//tr[7]/td[6]/text()").get()
-                object['Price/Book (mrq)_12/31/2018'] = valuation.xpath(".//tr[7]/td[7]/text()").get()
+            object['Price/Sales (ttm)_current'] = valuation.xpath(
+                ".//tr[6]/td[2]/text()").get()
+            object['Price/Sales (ttm)_12/31/2019'] = valuation.xpath(
+                ".//tr[6]/td[3]/text()").get()
+            object['Price/Sales (ttm)_9/30/2019'] = valuation.xpath(
+                ".//tr[6]/td[4]/text()").get()
+            object['Price/Sales (ttm)_6/30/2019'] = valuation.xpath(
+                ".//tr[6]/td[5]/text()").get()
+            object['Price/Sales (ttm)_3/31/2019'] = valuation.xpath(
+                ".//tr[6]/td[6]/text()").get()
+            object['Price/Sales (ttm)_12/31/2018'] = valuation.xpath(
+                ".//tr[6]/td[7]/text()").get()
 
-                object['Enterprise Value/Revenue_current'] = valuation.xpath(".//tr[8]/td[2]/text()").get()
-                object['Enterprise Value/Revenue_12/31/2019'] = valuation.xpath(".//tr[8]/td[3]/text()").get()
-                object['Enterprise Value/Revenue_9/30/2019'] = valuation.xpath(".//tr[8]/td[4]/text()").get()
-                object['Enterprise Value/Revenue_6/30/2019'] = valuation.xpath(".//tr[8]/td[5]/text()").get()
-                object['Enterprise Value/Revenue_3/31/2019'] = valuation.xpath(".//tr[8]/td[6]/text()").get()
-                object['Enterprise Value/Revenue_12/31/2018'] = valuation.xpath(".//tr[8]/td[7]/text()").get()
+            object['Price/Book (mrq)_current'] = valuation.xpath(
+                ".//tr[7]/td[2]/text()").get()
+            object['Price/Book (mrq)_12/31/2019'] = valuation.xpath(
+                ".//tr[7]/td[3]/text()").get()
+            object['Price/Book (mrq)_9/30/2019'] = valuation.xpath(
+                ".//tr[7]/td[4]/text()").get()
+            object['Price/Book (mrq)_6/30/2019'] = valuation.xpath(
+                ".//tr[7]/td[5]/text()").get()
+            object['Price/Book (mrq)_3/31/2019'] = valuation.xpath(
+                ".//tr[7]/td[6]/text()").get()
+            object['Price/Book (mrq)_12/31/2018'] = valuation.xpath(
+                ".//tr[7]/td[7]/text()").get()
 
-                object['Enterprise Value/EBITDA_current'] = valuation.xpath(".//tr[9]/td[2]/text()").get()
-                object['Enterprise Value/EBITDA_12/31/2019'] = valuation.xpath(".//tr[9]/td[3]/text()").get()
-                object['Enterprise Value/EBITDA_9/30/2019'] = valuation.xpath(".//tr[9]/td[4]/text()").get()
-                object['Enterprise Value/EBITDA_6/30/2019'] = valuation.xpath(".//tr[9]/td[5]/text()").get()
-                object['Enterprise Value/EBITDA_3/31/2019'] = valuation.xpath(".//tr[9]/td[6]/text()").get()
-                object['Enterprise Value/EBITDA_12/31/2018'] = valuation.xpath(".//tr[9]/td[7]/text()").get()
+            object['Enterprise Value/Revenue_current'] = valuation.xpath(
+                ".//tr[8]/td[2]/text()").get()
+            object['Enterprise Value/Revenue_12/31/2019'] = valuation.xpath(
+                ".//tr[8]/td[3]/text()").get()
+            object['Enterprise Value/Revenue_9/30/2019'] = valuation.xpath(
+                ".//tr[8]/td[4]/text()").get()
+            object['Enterprise Value/Revenue_6/30/2019'] = valuation.xpath(
+                ".//tr[8]/td[5]/text()").get()
+            object['Enterprise Value/Revenue_3/31/2019'] = valuation.xpath(
+                ".//tr[8]/td[6]/text()").get()
+            object['Enterprise Value/Revenue_12/31/2018'] = valuation.xpath(
+                ".//tr[8]/td[7]/text()").get()
 
+            object['Enterprise Value/EBITDA_current'] = valuation.xpath(
+                ".//tr[9]/td[2]/text()").get()
+            object['Enterprise Value/EBITDA_12/31/2019'] = valuation.xpath(
+                ".//tr[9]/td[3]/text()").get()
+            object['Enterprise Value/EBITDA_9/30/2019'] = valuation.xpath(
+                ".//tr[9]/td[4]/text()").get()
+            object['Enterprise Value/EBITDA_6/30/2019'] = valuation.xpath(
+                ".//tr[9]/td[5]/text()").get()
+            object['Enterprise Value/EBITDA_3/31/2019'] = valuation.xpath(
+                ".//tr[9]/td[6]/text()").get()
+            object['Enterprise Value/EBITDA_12/31/2018'] = valuation.xpath(
+                ".//tr[9]/td[7]/text()").get()
 
+            # object['Enterprise Value']
+            # object['Trailing P/E']
+            # object['Forward P/E']
+            # object['PEG Ratio (5 yr expected)']
+            # object['Enterprise Value ']
+            # object['Enterprise Value ']
+            # object['Enterprise Value ']
+            # object['Enterprise Value ']
 
-                # object['Enterprise Value']
-                # object['Trailing P/E']
-                # object['Forward P/E']
-                # object['PEG Ratio (5 yr expected)']
-                # object['Enterprise Value ']
-                # object['Enterprise Value ']
-                # object['Enterprise Value ']
-                # object['Enterprise Value ']
-            
-            object['Levered free cash flow (ttm)'] = response.xpath("//*[@id='Col1-0-KeyStatistics-Proxy']/section/div[3]/div[3]/div/div[6]/div/div/table/tbody/tr[2]/td[2]/text()").get()
+        object['Levered free cash flow (ttm)'] = response.xpath(
+            "//*[@id='Col1-0-KeyStatistics-Proxy']/section/div[3]/div[3]/div/div[6]/div/div/table/tbody/tr[2]/td[2]/text()").get()
 
-            # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[3]/div/div[6]/div/div/table/tbody/tr[2]/td[2]
-            
+        # //*[@id="Col1-0-KeyStatistics-Proxy"]/section/div[3]/div[3]/div/div[6]/div/div/table/tbody/tr[2]/td[2]
 
-            # with open('example.txt', 'a') as example: 
-            #     example.write(response.text)
+        # with open('example.txt', 'a') as example:
+        #     example.write(response.text)
 
-            # analysis_page = response.xpath("//a[@data-reactid='41']/@href").get()
-            
-            yield object
+        # analysis_page = response.xpath("//a[@data-reactid='41']/@href").get()
 
-            # if analysis_page: 
-            yield scrapy.Request(url='https://finance.yahoo.com/quote/{0}/analysis?p={0}'.format(last_chars), callback=self.parse_analysis)
+        yield object
 
-    def parse_analysis(self, response): 
-            object = {}
+        # if analysis_page:
+        yield scrapy.Request(url='https://finance.yahoo.com/quote/{0}/analysis?p={0}'.format(last_chars), callback=self.parse_analysis)
 
-            last_chars = response.url.split('/')[4]
-            print('response_url', response.url)
-            print('last_chars', last_chars)
+    def parse_analysis(self, response):
+        object = {}
 
-            object['stock_symbol'] = last_chars
-            object['Next 5 years (per annum)'] = response.xpath("//*[@id='Col1-0-AnalystLeafPage-Proxy']/section/table[6]/tbody/tr[5]/td[2]/text()").get()
+        last_chars = response.url.split('/')[4]
+        print('response_url', response.url)
+        print('last_chars', last_chars)
 
-            yield object
+        object['stock_symbol'] = last_chars
+        object['Next 5 years (per annum)'] = response.xpath(
+            "//*[@id='Col1-0-AnalystLeafPage-Proxy']/section/table[6]/tbody/tr[5]/td[2]/text()").get()
+
+        yield object
