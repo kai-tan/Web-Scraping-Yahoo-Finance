@@ -68,9 +68,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'yahoofinances.pipelines.YahoofinancesPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'yahoofinances.pipelines.MongodbPipeline': 300
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -94,3 +94,6 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 SPLASH_URL = 'http://192.168.99.100:8050'
+
+MONGO_URI = 'mongodb://heroku_8n7z0nqh:vjhjverngsv96oncj344iludie@ds131313.mlab.com:31313/heroku_8n7z0nqh'
+MONGO_DB = 'heroku_8n7z0nqh'

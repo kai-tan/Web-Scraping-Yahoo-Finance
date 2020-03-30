@@ -49,6 +49,8 @@ class YahooFinancesSpider(scrapy.Spider):
             
             print('quote', quote)
             name = quote.xpath(".//td[1]/span/text()").get()
+            if name == 'Avg. Volume':
+                name = 'Avg Volume'
             value = quote.xpath(".//td[2]/span/text()").get()
 
             object[name] = value
@@ -191,6 +193,5 @@ class YahooFinancesSpider(scrapy.Spider):
 
             object['stock_symbol'] = last_chars
             object['Next 5 years (per annum)'] = response.xpath("//*[@id='Col1-0-AnalystLeafPage-Proxy']/section/table[6]/tbody/tr[5]/td[2]/text()").get()
-            object['user-agent'] = response.request.headers.get('User-Agent').decode('utf-8')
 
             yield object
