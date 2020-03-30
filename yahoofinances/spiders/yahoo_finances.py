@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy_splash import SplashRequest
+import time
+
 
 
 class YahooFinancesSpider(scrapy.Spider):
@@ -55,7 +57,14 @@ class YahooFinancesSpider(scrapy.Spider):
         print('last_chars', last_chars)
 
         object = {}
+
+        named_tuple = time.localtime() # get struct_time
+        time_string = time.strftime("%d/%m/%Y", named_tuple)
+
+        object['date'] = time_string
+
         object['stock_symbol'] = last_chars
+
         for quote in response.xpath("//div[@id='quote-summary']/div[1]/table/tbody/tr"):
 
             print('quote', quote)
@@ -93,6 +102,11 @@ class YahooFinancesSpider(scrapy.Spider):
         last_chars = response.url.split('/')[4]
         print('response_url', response.url)
         print('last_chars', last_chars)
+
+        named_tuple = time.localtime() # get struct_time
+        time_string = time.strftime("%d/%m/%Y", named_tuple)
+
+        object['date'] = time_string
 
         object['stock_symbol'] = last_chars
 
@@ -250,6 +264,11 @@ class YahooFinancesSpider(scrapy.Spider):
 
     def parse_analysis(self, response):
         object = {}
+
+        named_tuple = time.localtime() # get struct_time
+        time_string = time.strftime("%d/%m/%Y", named_tuple)
+
+        object['date'] = time_string
 
         last_chars = response.url.split('/')[4]
         print('response_url', response.url)
