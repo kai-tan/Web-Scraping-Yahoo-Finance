@@ -1,0 +1,18 @@
+Referrer-Policy: no-referrer-when-downgrade
+Strict-Transport-Security: max-age=15552000
+X-Frame-Options: SAMEORIGIN
+Content-Security-Policy: sandbox allow-forms allow-modals allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-presentation;
+Content-Type: text/html; charset=utf-8
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Date: Sun, 29 Mar 2020 10:16:13 GMT
+Age: 0
+Server: ATS
+Expect-Ct: max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+X-Xss-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Set-Cookie: A1=d=AQABBG11gF4CEBnvic6dEu-LG2sRIH7uFqUFEgEBAQHGgV6KXgAAAAAA_SMAAA&S=AQAAAvnZstR25TzojuybFXA7kBI; Max-Age=31557600; Domain=.yahoo.com; Path=/; SameSite=Lax; Secure; HttpOnly
+Set-Cookie: A3=d=AQABBG11gF4CEBnvic6dEu-LG2sRIH7uFqUFEgEBAQHGgV6KXgAAAAAA_SMAAA&S=AQAAAvnZstR25TzojuybFXA7kBI; Max-Age=31557600; Domain=.yahoo.com; Path=/; SameSite=None; Secure; HttpOnly
+Set-Cookie: A1S=d=AQABBG11gF4CEBnvic6dEu-LG2sRIH7uFqUFEgEBAQHGgV6KXgAAAAAA_SMAAA&S=AQAAAvnZstR25TzojuybFXA7kBI&j=WORLD; Domain=.yahoo.com; Path=/; SameSite=Lax; Secure
+Set-Cookie: B=aa5nefpf80tbd&b=3&s=uh; Max-Age=31557600; Domain=.yahoo.com; Path=/
+Set-Cookie: GUC=AQEBAQFegcZeikIgpgSp; Max-Age=31557600; Domain=.yahoo.com; Path=/; Secure
