@@ -2,7 +2,7 @@
 import scrapy
 from scrapy_splash import SplashRequest
 import time
-
+import datetime
 
 
 class YahooFinancesSpider(scrapy.Spider):
@@ -86,7 +86,11 @@ class YahooFinancesSpider(scrapy.Spider):
         named_tuple = time.localtime() # get struct_time
         time_string = time.strftime("%d/%m/%Y", named_tuple)
 
+        now = datetime.datetime.utcnow()
+
         object['date'] = time_string
+
+        object['utcdate'] = now
 
         object['stock_symbol'] = last_chars
 
