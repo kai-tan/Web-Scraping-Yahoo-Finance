@@ -44,7 +44,6 @@ class YahooFinancesSpider(scrapy.Spider):
     for stock in SandPplusNasdaq:
         final_url.append('https://finance.yahoo.com/quote/{0}?p={0}'.format(stock))
 
-
     start_urls = final_url
 
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
