@@ -13,7 +13,7 @@ class YahooFinancesSpider(scrapy.Spider):
                     'CERN', 'CHKP', 'CHTR', 'CMCSA', 'COST', 'CSCO', 'CSX', 'CTAS', 'CTRP', 'CTSH', 'CTXS', 'DLTR', 'EA', 'EBAY', 'EXPE', 'FAST', 'FB', 'FISV', 'FOX', 'FOXA', 'GILD', 
                     'GOOG', 'GOOGL', 'HAS', 'HSIC', 'IDXX', 'ILMN', 'INCY', 'INTC', 'INTU', 'ISRG', 'JBHT', 'JD', 'KHC', 'KLAC', 'LBTYA', 'LBTYK', 'LRCX', 'LULU', 'MAR', 'MCHP', 'MDLZ', 
                     'MELI', 'MNST', 'MSFT', 'MU', 'MXIM', 'MYL', 'NFLX', 'NTAP', 'NTES', 'NVDA', 'NXPI', 'ORLY', 'PAYX', 'PCAR', 'PEP', 'PYPL', 'QCOM', 'REGN', 'ROST', 'SBUX', 'SIRI', 
-                    'SNPS', 'SWKS', 'SYMC', 'TMUS', 'TSLA', 'TTWO', 'TXN', 'UAL', 'ULTA', 'VRSK', 'VRSN', 'VRTX', 'WBA', 'WDAY', 'WDC', 'WLTW', 'WYNN', 'XEL', 'XLNX']
+                    'SNPS', 'SWKS', 'TMUS', 'TSLA', 'TTWO', 'TXN', 'UAL', 'ULTA', 'VRSK', 'VRSN', 'VRTX', 'WBA', 'WDAY', 'WDC', 'WLTW', 'WYNN', 'XEL', 'XLNX']
     
     SandPplusNasdaq = ['DVA', 'ETFC', 'TFC', 'BBY', 'AMP', 'AVB', 'PNC', 'RSG', 'AVY', 'JCI', 'CRM', 'SBAC', 'BAX', 'CTSH', 'INCY', 'FDX', 'O', 'EQR', 'CMCSA', 'AMT', 'FLIR', 'UHS', 'PKI', 
                     'TSLA', 'IBM', 'PFG', 'QRVO', 'JPM', 'MO', 'LMT', 'TSN', 'NI', 'ZTS', 'CFG', 'SYMC', 'MSI', 'MSCI', 'RF', 'GOOG', 'BKNG', 'CSX', 'KLAC', 'LULU', 'BWA', 'ULTA', 'CXO', 
@@ -31,7 +31,7 @@ class YahooFinancesSpider(scrapy.Spider):
                     'BEN', 'EXR', 'SWKS', 'VAR', 'AWK', 'KMB', 'HP', 'GOOGL', 'AAPL', 'NTAP', 'AME', 'TMUS', 'ROP', 'BK', 'DHR', 'ADI', 'KMI', 'TAP', 'AMD', 'J', 'INTU', 'DXC', 'TDG', 
                     'ARE', 'LHX', 'ATO', 'GILD', 'ORCL', 'WU', 'HAS', 'HFC', 'FIS', 'RTN', 'HOLX', 'HSIC', 'SWK', 'SCHW', 'CHTR', 'MET', 'RE', 'HIG', 'MKC', 'CPRT', 'EXC', 'PEP', 'FMC', 
                     'EL', 'COST', 'NSC', 'BIDU', 'PH', 'HRB', 'XEL', 'CBOE', 'PPG', 'AZO', 'JWN', 'INTC', 'LYB', 'PVH', 'NXPI', 'TROW', 'REGN', 'CL', 'ZION', 'NTRS', 'ABT', 'FE', 'BAC', 
-                    'VFC', 'CDW', 'MRK', 'MCHP', 'HRL', 'CPB', 'BMY', 'TT', 'KSS', 'EFX', 'EQIX', 'LBTYA', 'ETN', 'PFE', 'PSA', 'LEN', 'CTRP', 'ANSS', 'XRX', 'SLB', 'ALXN', 'NDAQ', 'EXPE', 
+                    'VFC', 'CDW', 'MRK', 'MCHP', 'HRL', 'CPB', 'BMY', 'TT', 'KSS', 'EFX', 'EQIX', 'LBTYA', 'ETN', 'PFE', 'PSA', 'LEN', 'ANSS', 'XRX', 'SLB', 'ALXN', 'NDAQ', 'EXPE', 
                     'PEAK', 'JBHT', 'DLR', 'HD', 'WEC', 'ALL', 'CE', 'AES', 'TPR', 'HPE', 'NOC', 'PLD', 'FAST', 'CELG', 'D', 'NWS', 'GPN', 'PGR', 'TRV', 'FCX', 'PYPL', 'MRO', 'ATVI', 'ES', 
                     'GIS', 'FOXA', 'TMO', 'EA', 'VTR', 'NTES', 'FTNT', 'IP', 'APD', 'LYV', 'CDNS', 'IPG', 'EMR', 'UDR', 'GRMN', 'DUK', 'MKTX', 'MDLZ', 'PRGO', 'DLTR', 'L', 'WY', 'MYL', 
                     'AAP', 'AON', 'LRCX', 'FRT', 'NRG', 'FISV', 'SBUX', 'APH', 'JNPR', 'EVRG', 'F', 'UA', 'NVR', 'UTX', 'SHW', 'STT', 'TFX', 'GLW', 'LDOS', 'ITW', 'NUE', 'CSCO', 'BLL', 'LLY', 
