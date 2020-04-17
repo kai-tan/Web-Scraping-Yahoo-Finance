@@ -11,7 +11,7 @@ import logging
 #     collection_name = "stocks_data"
     
 #     def open_spider(self, spider):
-#         self.client = pymongo.MongoClient("mongodb+srv://kai:g0073297x@cluster0-uaxcp.mongodb.net/test?retryWrites=true&w=majority")
+#         self.client = pymongo.MongoClient("")
 #         self.db = self.client["yahoo_finances"]
 
 #     def close_spider(self, spider):
