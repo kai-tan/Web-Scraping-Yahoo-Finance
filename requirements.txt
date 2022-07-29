@@ -54,7 +54,7 @@ python-dateutil==1.5
 pytz==2019.3
 queuelib==1.5.0
 requests==2.23.0
-Scrapy==1.6.0
+Scrapy==2.6.2
 scrapy-splash==0.7.2
 scrapyd==1.2.1
 scrapyd-client==1.2.0a1
